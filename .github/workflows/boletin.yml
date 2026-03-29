@@ -1,0 +1,17 @@
+name: Boletín IA Diario
+on:
+  schedule:
+    - cron: '0 9,22 * * *'  # 9:00 AM y 22:00 PM
+jobs:
+  boletin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.12'
+      - name: Instalar dependencias
+        run: pip install requests
+      - name: Ejecutar boletín
+        run: python boletin_ia_telegram_pro.py
