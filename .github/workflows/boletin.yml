@@ -12,14 +12,27 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+
     - name: Setup Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.12'
-    - name: Install dependencies
+
+    - name: Instalar dependencias
       run: pip install requests
-    - name: Run Boletín
+
+    - name: Ejecutar Boletín IA
       env:
         TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        GMAIL_USER: ${{ secrets.GMAIL_USER }}
+        GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
       run: python boletin_ia_telegram_pro.py
+
+    - name: Guardar HTML
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: boletin-${{ github.run_number }}
+        path: outputs/*.html
+        retention-days: 30
